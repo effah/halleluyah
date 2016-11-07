@@ -65,7 +65,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 5
+    'PAGE_SIZE': 2
 }
 
 ROOT_URLCONF = 'halleluyah.urls'
@@ -174,7 +174,7 @@ S3DIRECT_DESTINATIONS = {
     },
     
     'userCover': {
-        'key': 'cover',
+        'key': 'cover-photos',
         'allowed': ['image/jpeg', 'image/png'],
         'acl': 'public-read',
         'content_length_range': (5000, 20000000),

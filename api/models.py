@@ -12,8 +12,8 @@ class User(models.Model):
 	lname = models.CharField(max_length=100)
 	phone = PhoneNumberField(blank=True)
 	email = models.EmailField(max_length=255, unique=True,null=False)
-	thumbnail = S3DirectField(dest='userProfile')
-	cover_photo = S3DirectField(dest='userCover')
+	thumbnail = S3DirectField(dest='userProfile', blank=True)
+	cover_photo = S3DirectField(dest='userCover', blank=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 

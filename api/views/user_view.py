@@ -9,14 +9,12 @@ import logging
 from api.serializer.user import UserSerializer
 from api.models import User
 
-class UserList(APIView):
+class UserList(generics.ListAPIView):
 	model = User
 	serializer_class = UserSerializer
 
-	def get(self,request,api_version,format=None):
-		users = User.objects.all()
-		serializer = UserSerializer(users, many=True)
-		return Response(serializer.data) 
+	def get_queryset(self):  
+		return User.objects.all() 
 
 	def put(self,request,api_version,format=None): 
 		serializer = UserSerializer(data=request.data)
@@ -28,7 +26,7 @@ class UserList(APIView):
 class UserDetail(APIView):
 	model = User
 	serializer_class = UserSerializer
-
+	
 	def get_object(self,token):
 		try:
 			return User.objects.get(id=token)
@@ -43,6 +41,8 @@ class UserDetail(APIView):
 	def put(self,request,api_version,token,format=None):
 		user = self.get_object(token)
 		serializer = UserSerializer(user, data=request.data)
+		logging.error(request.data)
+		
 		if(serializer.is_valid()):
 			serializer.save()
 			return Response(serializer.data)
