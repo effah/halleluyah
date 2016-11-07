@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'separatedvaluesfield',
     'django_comments',
     'django.contrib.sites',
-    'updown',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +55,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users. 
+    'DEFAULT_PERMISSION_CLASSES': [
+        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5
+}
 
 ROOT_URLCONF = 'halleluyah.urls'
 
