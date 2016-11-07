@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_comments',
     'django.contrib.sites',
     'rest_framework',
+    's3direct',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +143,59 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# AWS keys
+AWS_SECRET_ACCESS_KEY = 'STT/fCnpttLhjZ0Av1eN6+26cqn25in2jKqAGm7N'
+AWS_ACCESS_KEY_ID = 'AKIAITL2UH3XX5VPNKAA'
+AWS_STORAGE_BUCKET_NAME = 'halleluyah'
+
+# The region of your bucket, more info:
+# http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
+S3DIRECT_REGION = 'us-west-2'
+
+# Destinations, with the following keys:
+#
+# key [required] Where to upload the file to
+# auth [optional] An ACL function to whether the current user can perform this action
+# allowed [optional] List of allowed MIME types
+# acl [optional] Give the object another ACL rather than 'public-read'
+# cache_control [optional] Cache control headers, eg 'max-age=2592000'
+# content_disposition [optional] Useful for sending files as attachements
+# bucket [optional] Specify a different bucket for this particular object
+# server_side_encryption [optional] Encryption headers for buckets that require it
+#
+S3DIRECT_DESTINATIONS = {
+    # Allow anybody to upload any MIME type
+    'userProfile': {
+        'key': 'profile-photos',
+        'allowed': ['image/jpeg', 'image/png'],
+        'acl': 'public-read',
+        'content_length_range': (5000, 20000000),
+    },
+    
+    'userCover': {
+        'key': 'cover',
+        'allowed': ['image/jpeg', 'image/png'],
+        'acl': 'public-read',
+        'content_length_range': (5000, 20000000),
+    },
+                         
+    'userPhotos': {
+        'key': 'photos',
+        'allowed': ['image/jpeg', 'image/png'],
+        'acl': 'public-read',
+        'content_length_range': (5000, 20000000),
+        'cache_control': 'max-age=2592000',
+    },  
+                         
+    # Allow authenticated users to upload mp4's
+    'userVideos': {
+        'key': 'vids', 
+        'allowed': ['video/mp4'], 
+        'acl': 'public-read',
+        'cache_control': 'max-age=2592000',
+    }, 
+}
 
 
 # Static files (CSS, JavaScript, Images)

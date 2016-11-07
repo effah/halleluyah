@@ -10,3 +10,4 @@
  	pip3 install django-separatedvaluesfield
  	pip3 install django-sortedm2m
  	pip3 install mysqlclient
+ 	pip3 install django-s3direct

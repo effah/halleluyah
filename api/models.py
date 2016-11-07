@@ -3,6 +3,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from sortedm2m.fields import SortedManyToManyField
 from separatedvaluesfield.models import SeparatedValuesField
 from django_comments.models import CommentAbstractModel 
+from s3direct.fields import  S3DirectField
 from django.db import models
 
 class User(models.Model):
@@ -11,15 +12,15 @@ class User(models.Model):
 	lname = models.CharField(max_length=100)
 	phone = PhoneNumberField(blank=True)
 	email = models.EmailField(max_length=255, unique=True,null=False)
-	thumbnail = models.CharField(max_length=255, blank=True)
-	cover_photo = models.CharField(max_length=255, blank=True)
+	thumbnail = S3DirectField(dest='userProfile')
+	cover_photo = S3DirectField(dest='userCover')
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 
 class Photo(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)  
-	photo = models.CharField(max_length=255)
-	thumbnail = models.CharField(max_length=255)
+	photo = S3DirectField(dest='userPhotos')
+	thumbnail = S3DirectField(dest='userPhotos')
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 
