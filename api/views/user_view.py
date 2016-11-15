@@ -1,13 +1,10 @@
-from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework import status 
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
-from django.http import QueryDict,Http404
-from django.views.decorators.csrf import csrf_exempt
-import logging 
+from django.http import Http404
 from api.serializer.user import UserSerializer
-from api.models import User
+from api.models import User 
 
 class UserList(generics.ListAPIView):
 	model = User
@@ -16,7 +13,7 @@ class UserList(generics.ListAPIView):
 	def get_queryset(self):  
 		return User.objects.all() 
 
-	def put(self,request,api_version,format=None): 
+	def post(self,request,api_version,format=None):
 		serializer = UserSerializer(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
@@ -41,8 +38,7 @@ class UserDetail(APIView):
 	def put(self,request,api_version,token,format=None):
 		user = self.get_object(token)
 		serializer = UserSerializer(user, data=request.data)
-		logging.error(request.data)
-		
+			
 		if(serializer.is_valid()):
 			serializer.save()
 			return Response(serializer.data)

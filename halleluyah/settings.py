@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'separatedvaluesfield',
     'django_comments',
     'django.contrib.sites',
-    'rest_framework',
-    's3direct',
+    'rest_framework', 
+    'django_s3_storage',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -61,8 +62,8 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users. 
     'DEFAULT_PERMISSION_CLASSES': [
-        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        #'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 2
@@ -144,61 +145,83 @@ USE_L10N = True
 
 USE_TZ = True
 
-# AWS keys
-AWS_SECRET_ACCESS_KEY = 'STT/fCnpttLhjZ0Av1eN6+26cqn25in2jKqAGm7N'
-AWS_ACCESS_KEY_ID = 'AKIAITL2UH3XX5VPNKAA'
-AWS_STORAGE_BUCKET_NAME = 'halleluyah'
+# The region to connect to when storing files.
+AWS_REGION = "us-west-2"
 
-# The region of your bucket, more info:
-# http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
-S3DIRECT_REGION = 'us-west-2'
+# The AWS access key used to access the storage buckets.
+AWS_ACCESS_KEY_ID = "AKIAITL2UH3XX5VPNKAA"
 
-# Destinations, with the following keys:
-#
-# key [required] Where to upload the file to
-# auth [optional] An ACL function to whether the current user can perform this action
-# allowed [optional] List of allowed MIME types
-# acl [optional] Give the object another ACL rather than 'public-read'
-# cache_control [optional] Cache control headers, eg 'max-age=2592000'
-# content_disposition [optional] Useful for sending files as attachements
-# bucket [optional] Specify a different bucket for this particular object
-# server_side_encryption [optional] Encryption headers for buckets that require it
-#
-S3DIRECT_DESTINATIONS = {
-    # Allow anybody to upload any MIME type
-    'userProfile': {
-        'key': 'profile-photos',
-        'allowed': ['image/jpeg', 'image/png'],
-        'acl': 'public-read',
-        'content_length_range': (5000, 20000000),
-    },
-    
-    'userCover': {
-        'key': 'cover-photos',
-        'allowed': ['image/jpeg', 'image/png'],
-        'acl': 'public-read',
-        'content_length_range': (5000, 20000000),
-    },
-                         
-    'userPhotos': {
-        'key': 'photos',
-        'allowed': ['image/jpeg', 'image/png'],
-        'acl': 'public-read',
-        'content_length_range': (5000, 20000000),
-        'cache_control': 'max-age=2592000',
-    },  
-                         
-    # Allow authenticated users to upload mp4's
-    'userVideos': {
-        'key': 'vids', 
-        'allowed': ['video/mp4'], 
-        'acl': 'public-read',
-        'cache_control': 'max-age=2592000',
-    }, 
-}
+# The AWS secret access key used to access the storage buckets.
+AWS_SECRET_ACCESS_KEY = "STT/fCnpttLhjZ0Av1eN6+26cqn25in2jKqAGm7N"
 
+# The S3 bucket used to store uploaded files.
+AWS_S3_BUCKET_NAME = "halleluyah"
+
+# The S3 calling format to use to connect to the bucket.
+AWS_S3_CALLING_FORMAT = "boto.s3.connection.OrdinaryCallingFormat"
+
+# The host to connect to (only needed if you are using a non-AWS host)
+AWS_S3_HOST = ""
+
+# A prefix to add to the start of all uploaded files.
+AWS_S3_KEY_PREFIX = ""
+
+# Whether to enable querystring authentication for uploaded files.
+AWS_S3_BUCKET_AUTH = False
+
+# The expire time used to access uploaded files.
+AWS_S3_MAX_AGE_SECONDS = 60*60  # 1 hour.
+
+# A custom URL prefix to use for public-facing URLs for uploaded files.
+AWS_S3_PUBLIC_URL = ""
+
+# Whether to set the storage class of uploaded files to REDUCED_REDUNDANCY.
+AWS_S3_REDUCED_REDUNDANCY = False
+
+# A dictionary of additional metadata to set on the uploaded files.
+# If the value is a callable, it will be called with the path of the file on S3.
+AWS_S3_METADATA = {}
+
+# Whether to enable gzip compression for uploaded files.
+AWS_S3_GZIP = True
+
+# The S3 bucket used to store static files.
+AWS_S3_BUCKET_NAME_STATIC = "halleluyah-statics"
+
+# The S3 calling format to use to connect to the static bucket.
+AWS_S3_CALLING_FORMAT_STATIC = "boto.s3.connection.OrdinaryCallingFormat"
+
+# The host to connect to for static files (only needed if you are using a non-AWS host)
+AWS_S3_HOST_STATIC = ""
+
+# Whether to enable querystring authentication for static files.
+AWS_S3_BUCKET_AUTH_STATIC = False
+
+# A prefix to add to the start of all static files.
+AWS_S3_KEY_PREFIX_STATIC = ""
+
+# The expire time used to access static files.
+AWS_S3_MAX_AGE_SECONDS_STATIC = 60*60*24*365  # 1 year.
+
+# A custom URL prefix to use for public-facing URLs for static files.
+AWS_S3_PUBLIC_URL_STATIC = ""
+
+# Whether to set the storage class of static files to REDUCED_REDUNDANCY.
+AWS_S3_REDUCED_REDUNDANCY_STATIC = False
+
+# A dictionary of additional metadata to set on the static files.
+# If the value is a callable, it will be called with the path of the file on S3.
+AWS_S3_METADATA_STATIC = {}
+
+# Whether to enable gzip compression for static files.
+AWS_S3_GZIP_STATIC = True
+
+THUMBNAIL_FORCE_OVERWRITE = True
+#AWS S3 File Storage
+DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+#STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
 STATIC_URL = '/static/'

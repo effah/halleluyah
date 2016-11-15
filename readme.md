@@ -11,3 +11,6 @@
  	pip3 install django-sortedm2m
  	pip3 install mysqlclient
  	pip3 install django-s3direct
+ 	pip3 install boto3
+ 	pip3 install django-s3-storage
+ 	pip3 install sorl-thumbnail
