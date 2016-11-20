@@ -28,7 +28,7 @@ class UserDetail(APIView):
 		try:
 			return User.objects.get(id=token)
 		except User.DoesNotExist:
-			return Http404
+			raise Http404
 
 	def get(self,request,api_version,token,format=None):
 		user = self.get_object(token)

@@ -6,6 +6,7 @@ from django_comments.models import CommentAbstractModel
 from django.db import models
 from functools import partial 
 from django.core.exceptions import ValidationError 
+from django.contrib.auth.models import User
 
 def _update_filename(instance, filename, path):
 	path = path

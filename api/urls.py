@@ -7,6 +7,8 @@ urlpatterns = [
     url(r'^users/(?P<token>[-\w]+)/$', user_view.UserDetail.as_view()),
     url(r'^posts/$', post_view.PostList.as_view()),
     url(r'^posts/(?P<pk>\d+)/$', post_view.PostDetail.as_view()),
+    url(r'^posts/(?P<pk>\d+)/likes/$', post_view.LikeList.as_view()),
+    url(r'^posts/(?P<pk>\d+)/likes/(?P<lk>\d+)/$', post_view.LikeDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

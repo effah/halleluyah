@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from api.models import Post 
-from api.serializer.user import UserSerializer, UserViewSerializer
+from api.serializer.user import UserViewSerializer
 from api.serializer.gallery import GallerySerializer
 from api.serializer.bible import BibleSerializer
 from api.serializer.like import LikeSerializer
